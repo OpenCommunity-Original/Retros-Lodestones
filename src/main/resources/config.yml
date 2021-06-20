@@ -1,0 +1,31 @@
+# Retro's Lodestones Configuration
+particles-enabled: true
+sounds-enabled: true
+# Requires the user to activate teleport at a respawn anchor.
+require-respawn-anchor: true
+# Cost in experience per 1000 blocks.
+experience-cost: 10
+# How far away from the lodestone can we teleport before we
+# determine the lodestone warp is obstructed.
+freespace-scan-range: 15
+# Enable cross-dimension teleportation.
+cross-dimension: true
+cross-dimension-cost: 100
+# If enabled only the creator of the lodestone compass can
+# teleport using it.
+owner-only-teleport: false
+# For legacy implementation, you can change these to any blocks
+lodestone-item: BEACON
+respawn-anchor-item: BEACON
+# When enabled destroying a lodestone will result in the teleport being missing or obstructed
+missing-obstructed: true
+compass-item: COMPASS
+teleportation-sickness: true
+teleportation-sickness-duration: 120
+teleport-delay: 60
+# Display a title when a user teleports
+teleport-title: true
+# Change expected default lodestone
+lodestone-default: LODESTONE
+verbose-logging: true
+# End of config

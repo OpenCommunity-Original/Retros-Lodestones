@@ -1,0 +1,10 @@
+# Retro's Lodestones Particles Configuration
+
+# Emitted on the respawn anchor, or player if require-respawn-anchor: false
+teleport-failed: SQUID_INK
+# Emitted on the lodestone on a successful teleport
+teleport-success: PORTAL
+teleport-success-player: TOTEM
+teleport-succcess-player-count: 15
+bind-successful: SPELL_WITCH
+particle-count: 10

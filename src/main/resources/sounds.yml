@@ -1,0 +1,13 @@
+# Retro's Lodestones Sounds :qxConfiguration
+
+teleport-successful: BLOCK_BEACON_POWER_SELECT
+teleport-failed: BLOCK_FIRE_EXTINGUISH
+bind-successful: BLOCK_BEACON_ACTIVATE
+obstructed-lodestone: ITEM_TRIDENT_RETURN
+insufficient-experience: BLOCK_BEACON_DEACTIVATE
+insufficient-charge: BLOCK_BEACON_DEACTIVATE
+not-bound: BLOCK_FIRE_EXTINGUISH
+already-bound: BLOCK_BEACON_DEACTIVATE
+pointless-teleport: BLOCK_BEACON_DEACTIVATE
+not-owner: ENTITY_VILLAGER_NO
+wrong-dimension: BLOCK_BEACON_DEACTIVATE

@@ -1,0 +1,55 @@
+package com.gitlab.retropronghorn.retroslodestones.utils;
+
+import static org.mockito.Mockito.when;
+
+import com.gitlab.retropronghorn.retroslodestones.RetrosLodestones;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import org.junit.Assert;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest( { Location.class, Block.class })
+public class LodestoneUtil_Test {
+
+    /*
+    // TODO: Mock RetrosLodestones config option
+    @Test
+    public void testIsMissing() {
+        String expectedBlock = "BEACON";
+        Block mockExpectedBlock = PowerMockito.mock(Block.class);
+        when(mockExpectedBlock.getType()).thenReturn(Material.getMaterial(expectedBlock));
+        // Mock World to return name
+        World mockWorld = PowerMockito.mock(World.class);
+        when(mockWorld.getName()).thenReturn("mockworld");
+        // Mock Location to return coords & world
+        Location mockLocation = PowerMockito.mock(Location.class);        
+        when(mockLocation.getBlock()).thenReturn(mockExpectedBlock);
+        boolean isMissing = LodestoneUtil.isMissing(mockLocation);
+        Assert.assertFalse(isMissing);
+    }
+
+    @Test
+    public void testIsActuallyMissing() {
+        String airBlock = "AIR";
+        Block mockAirBlock = PowerMockito.mock(Block.class);
+        when(mockAirBlock.getType()).thenReturn(Material.getMaterial(airBlock));
+        // Mock World to return name
+        World mockWorld = PowerMockito.mock(World.class);
+        when(mockWorld.getName()).thenReturn("mockworld");
+        // Mock Location to return coords & world
+        Location mockLocation = PowerMockito.mock(Location.class);        
+        when(mockLocation.getBlock()).thenReturn(mockAirBlock);
+        boolean isMissing = LodestoneUtil.isMissing(mockLocation);
+        Assert.assertFalse(isMissing);
+    }
+    */
+}
