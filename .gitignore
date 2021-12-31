@@ -4,4 +4,8 @@ target/
 .settings
 .idea
 .vscode
+.gradle
 bin/
+build/
+old/
+gradle/

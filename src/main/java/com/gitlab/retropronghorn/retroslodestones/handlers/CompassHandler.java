@@ -226,6 +226,11 @@ public class CompassHandler {
                         PotionEffectType.LEVITATION,
                         instance.getConfig().getInt("teleport-delay"),
                         1));
+        /*event.getPlayer().addPotionEffect(
+                new PotionEffect(
+                        PotionEffectType.BLINDNESS,
+                        instance.getConfig().getInt("teleportation-sickness-duration"),
+                        2));*/
     }
     
     /**

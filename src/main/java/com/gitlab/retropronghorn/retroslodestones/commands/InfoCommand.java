@@ -33,18 +33,14 @@ public class InfoCommand implements CommandExecutor {
         Player senderPlayer = Bukkit.getPlayer(sender.getName());
         MessengerHandler.sendActionbarMessage(
                 senderPlayer,
-                ChatColor.GREEN +
                         "Retro's Lodestones v" +
                         instance.getDescription().getVersion() +
-                        " by " +
-                        instance.getDescription().getAuthors());
+                        " by OpenCommunity Original");
         MessengerHandler.sendChatMessage(
                 senderPlayer,
-                ChatColor.GREEN +
                 "Retro's Lodestones v" +
                         instance.getDescription().getVersion() +
-                        " by " +
-                        instance.getDescription().getAuthors());
+                        " by OpenCommunity Original");
         return false;
 
     }
