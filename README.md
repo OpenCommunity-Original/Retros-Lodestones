@@ -4,7 +4,7 @@
 # Retro's Lodestones Reloaded
 **Supported Versions:**
 
-![1.18](https://img.shields.io/badge/%201.18-SUPPORTED-green?style=for-the-badge)
+![1.8](https://img.shields.io/badge/1.8%20to%201.17-LEGACY-blue?style=for-the-badge) ![1.18](https://img.shields.io/badge/%201.18-SUPPORTED-green?style=for-the-badge)
 
 Retro's Lodestones adds teleport functionality to lodestones in Minecraft.
 Players can bind a compass to a lodestone then right click the compass on a respawn
