@@ -1,6 +1,6 @@
 ![vanilla](https://img.shields.io/badge/DESIGNED%20FOR-VANILLA+%20SERVERS-green?style=for-the-badge)
 
-![RetrosLodestones](https://i.imgur.com/WmWJShg.jpg)
+![RetrosLodestones](https://i.imgur.com/sFnJ8FJ.png)
 # Retro's Lodestones Reloaded
 **Supported Versions:**
 
