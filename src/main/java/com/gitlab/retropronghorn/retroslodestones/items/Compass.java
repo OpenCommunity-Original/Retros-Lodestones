@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 
 /** Represents a new compass item
@@ -103,15 +104,16 @@ public class Compass {
      * @param location Location to bind to
      **/
     public void bindCompass(Player player, ItemStack item, Location location) {
-        // Remove one compass
-        ItemStack singleItem = new ItemStack(item.getType());
-        player.getInventory().removeItem(singleItem);
         // Create bound compass
         ItemStack boundCompass = buildCompass(player, item, location);
         if (player.getInventory().firstEmpty() > -1) {
             player.getInventory().addItem(boundCompass);
         } else {
             player.getWorld().dropItem(player.getLocation(), boundCompass);
+        }
+        // Remove one compass
+        if (item != null) {
+            item.subtract(1);
         }
     }
 
