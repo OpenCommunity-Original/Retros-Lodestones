@@ -4,7 +4,9 @@ import com.gitlab.retropronghorn.retroslodestones.RetrosLodestones;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-/** Represents a teleport util
+/**
+ * Represents a teleport util
+ *
  * @author RetroPronghorn
  * @author https://gitlab.com/retropronghorn/retros-lodestones
  * @version 1.0-SNAPSHOT
@@ -14,26 +16,17 @@ public class TeleportUtil {
     /**
      * Teleport a player to a remote location
      *
-     * @param player player to teleport
+     * @param player   player to teleport
      * @param location location to teleport player to
      **/
     public static Boolean teleportPlayer(RetrosLodestones instance, Player player, Location location) {
         Location offsetLocation = new Location(
                 location.getWorld(),
-                location.getX()+0.5,
-                location.getY()+1,
-                location.getZ()+0.5);
+                location.getX() + 0.5,
+                location.getY() + 1,
+                location.getZ() + 0.5);
 
-        instance.getServer().getScheduler().scheduleSyncDelayedTask(
-                instance,
-                () -> {
-                        if (VersionUtil.isAtOrAbove(ServerVersion.V1_15)) {
-                                player.teleportAsync(offsetLocation);
-                        } else {
-                                player.teleport(offsetLocation);
-                        }
-                },
-                instance.getConfig().getInt("teleport-delay"));
+        instance.getServer().getScheduler().scheduleSyncDelayedTask(instance, () -> player.teleport(offsetLocation), instance.getConfig().getInt("teleport-delay"));
         return true;
     }
 
@@ -47,19 +40,16 @@ public class TeleportUtil {
         Location oneBlockAbove = new Location(
                 location.getWorld(),
                 location.getX(),
-                location.getY()+1,
+                location.getY() + 1,
                 location.getZ());
 
         Location twoBlocksAbove = new Location(
                 location.getWorld(),
                 location.getX(),
-                location.getY()+2,
+                location.getY() + 2,
                 location.getZ());
 
-        if (oneBlockAbove.getBlock().getType().toString().equalsIgnoreCase("AIR") &&
-                twoBlocksAbove.getBlock().getType().toString().equalsIgnoreCase("AIR")) {
-            return true;
-        }
-        return false;
+        return oneBlockAbove.getBlock().getType().toString().equalsIgnoreCase("AIR") &&
+                twoBlocksAbove.getBlock().getType().toString().equalsIgnoreCase("AIR");
     }
 }

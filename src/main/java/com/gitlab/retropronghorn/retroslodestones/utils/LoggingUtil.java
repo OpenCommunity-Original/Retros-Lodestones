@@ -4,7 +4,9 @@ import com.gitlab.retropronghorn.retroslodestones.RetrosLodestones;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-/** Represents a new logging util
+/**
+ * Represents a new logging util
+ *
  * @author RetroPronghorn
  * @author https://gitlab.com/retropronghorn/retros-lodestones
  * @version 1.0-SNAPSHOT
@@ -17,7 +19,7 @@ public class LoggingUtil {
      * @param message message to wrap
      **/
     private static void wrap(String message) {
-        Bukkit.getConsoleSender().sendMessage("["+ChatColor.LIGHT_PURPLE+"Retro's Loadstones"+ChatColor.RESET+"]: "+message);
+        Bukkit.getConsoleSender().sendMessage("[" + ChatColor.LIGHT_PURPLE + "Retro's Loadstones" + ChatColor.RESET + "]: " + message);
     }
 
     /**

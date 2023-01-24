@@ -7,47 +7,47 @@ public class StringColorParser {
 
     public static boolean unifiedColor = true;
 
-    public static String uuidToColor(String uuid){
+    public static String uuidToColor(String uuid) {
         StringBuilder build = new StringBuilder();
-        for(int i = 0; i < uuid.length(); i++){
-            if(uuid.charAt(i)!='-')
+        for (int i = 0; i < uuid.length(); i++) {
+            if (uuid.charAt(i) != '-')
                 build.append("§").append(uuid.charAt(i));
-            if(unifiedColor)
+            if (unifiedColor)
                 build.append("§5");
         }
         return build.toString();
     }
 
-    public static String getUUID(RetrosLodestones inst, ItemStack stack){
+    public static String getUUID(RetrosLodestones inst, ItemStack stack) {
         String lang = inst.getLanguageConfig().getString("compass-bound");
         String uuidString = null;
-        if(stack.getItemMeta().getLore()==null)
+        if (stack.getItemMeta().getLore() == null)
             return null;
-        for(String s : stack.getItemMeta().getLore()) {
+        for (String s : stack.getItemMeta().getLore()) {
             if (s.contains(lang))
                 uuidString = s;
         }
-        if(uuidString!=null){
+        if (uuidString != null) {
             String[] sub = uuidString.split(lang);
             String uuid = sub[0].replace("§", "");
-            if(unifiedColor)
-                uuid = uuid.substring(0, uuid.length()-1);
+            if (unifiedColor)
+                uuid = uuid.substring(0, uuid.length() - 1);
             uuidString = new StringBuilder(uuid)
                     .insert(8, "-").insert(13, "-").insert(18, "-").insert(23, "-").toString();
         }
         return uuidString;
     }
 
-    public static String getLocationString(RetrosLodestones inst, ItemStack stack){
+    public static String getLocationString(RetrosLodestones inst, ItemStack stack) {
         String lang = inst.getLanguageConfig().getString("compass-bound");
         String locString = null;
-        if(stack.getItemMeta().getLore()==null)
+        if (stack.getItemMeta().getLore() == null)
             return null;
-        for(String s : stack.getItemMeta().getLore()) {
+        for (String s : stack.getItemMeta().getLore()) {
             if (s.contains(lang))
                 locString = s;
         }
-        if(locString!=null){
+        if (locString != null) {
             String[] sub = locString.split(lang);
             locString = sub[1];
         }

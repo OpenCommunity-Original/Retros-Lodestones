@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 
 public class LodestoneUtil {
     public final static String LODESTONE_BLOCK = RetrosLodestones.getPlugin().getConfig().getString("lodestone-item");
+
     /**
      * Check that a lodestone exists at location
      *

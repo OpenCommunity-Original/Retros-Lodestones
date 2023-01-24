@@ -4,7 +4,9 @@ import com.gitlab.retropronghorn.retroslodestones.RetrosLodestones;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-/** Represents a new experience util
+/**
+ * Represents a new experience util
+ *
  * @author RetroPronghorn
  * @author https://gitlab.com/retropronghorn/retros-lodestones
  * @version 1.0-SNAPSHOT
@@ -18,11 +20,30 @@ public class ExperienceUtil {
      * Create a new experience util
      *
      * @param instance Reference to the plugin instance
-     * @param player player to manage experience on
+     * @param player   player to manage experience on
      **/
     public ExperienceUtil(RetrosLodestones instance, Player player) {
         this.instance = instance;
         this.player = player;
+    }
+
+    /**
+     * Get the total experience a player has
+     *
+     * @param level level of the player
+     * @return returns the total experience by level
+     **/
+    private static int getTotalExperience(int level) {
+        int xp = 0;
+
+        if (level >= 0 && level <= 15) {
+            xp = (int) Math.round(Math.pow(level, 2) + 6 * level);
+        } else if (level > 15 && level <= 30) {
+            xp = (int) Math.round((2.5 * Math.pow(level, 2) - 40.5 * level + 360));
+        } else if (level > 30) {
+            xp = (int) Math.round(((4.5 * Math.pow(level, 2) - 162.5 * level + 2220)));
+        }
+        return xp;
     }
 
     /**
@@ -48,7 +69,7 @@ public class ExperienceUtil {
     /**
      * Calculate cost to teleport to a remote location
      *
-     * @param to location we're attempting to teleport to
+     * @param to   location we're attempting to teleport to
      * @param from location we're teleporting from
      * @return returns the teleport cost
      **/
@@ -56,25 +77,6 @@ public class ExperienceUtil {
         if (!to.getWorld().equals(from.getWorld()))
             return RetrosLodestones.getPlugin().getConfig().getDouble("cross-dimension-cost");
         return instance.getConfig().getInt("experience-cost") * (to.distance(from) / 1000);
-    }
-
-    /**
-     * Get the total experience a player has
-     *
-     * @param level level of the player
-     * @return returns the total experience by level
-     **/
-    private static int getTotalExperience(int level) {
-        int xp = 0;
-
-        if (level >= 0 && level <= 15) {
-            xp = (int) Math.round(Math.pow(level, 2) + 6 * level);
-        } else if (level > 15 && level <= 30) {
-            xp = (int) Math.round((2.5 * Math.pow(level, 2) - 40.5 * level + 360));
-        } else if (level > 30) {
-            xp = (int) Math.round(((4.5 * Math.pow(level, 2) - 162.5 * level + 2220)));
-        }
-        return xp;
     }
 
     /**

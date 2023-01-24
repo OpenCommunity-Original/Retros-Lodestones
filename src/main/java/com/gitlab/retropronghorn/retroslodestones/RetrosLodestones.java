@@ -10,9 +10,6 @@ package com.gitlab.retropronghorn.retroslodestones;
 
 import com.gitlab.retropronghorn.retroslodestones.commands.InfoCommand;
 import com.gitlab.retropronghorn.retroslodestones.listeners.BlockInteractions;
-import com.gitlab.retropronghorn.retroslodestones.utils.VersionUtil;
-
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,9 +17,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 
-/** Represents the RetrosLodestones plugin.
+/**
+ * Represents the RetrosLodestones plugin.
+ *
  * @author RetroPronghorn
  * @author https://gitlab.com/retropronghorn/retros-lodestones
  * @version 1.0-SNAPSHOT
@@ -42,20 +42,22 @@ public final class RetrosLodestones extends JavaPlugin {
         return instance;
     }
 
+    public static RetrosLodestones getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
         RetrosLodestones.instance = this;
         this.saveDefaultConfig();
         createCustomConfigs();
-        
+
         // Register events
         this.getServer().getPluginManager().registerEvents(new BlockInteractions(this), this);
 
         // Register Commands
-        this.getCommand("retroslodestones").setExecutor(new InfoCommand(this));
-        // Legacy version check
-        VersionUtil.legacyCheck();
+        Objects.requireNonNull(this.getCommand("retroslodestones")).setExecutor(new InfoCommand(this));
     }
 
     @Override

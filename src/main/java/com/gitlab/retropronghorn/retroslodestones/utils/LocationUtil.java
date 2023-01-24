@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-/** Represents a new location util
+/**
+ * Represents a new location util
  * Converts and manages location data
+ *
  * @author RetroPronghorn
  * @author https://gitlab.com/retropronghorn/retros-lodestones
  * @version 1.0-SNAPSHOT
@@ -50,6 +52,6 @@ public class LocationUtil {
      * @return Retruns string built from Location
      **/
     public static String toString(Location location) {
-        return location.getWorld().getName()+", "+location.getBlockX()+", "+location.getBlockY()+", "+location.getBlockZ();
+        return location.getWorld().getName() + ", " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
     }
 }
