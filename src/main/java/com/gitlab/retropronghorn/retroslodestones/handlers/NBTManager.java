@@ -4,6 +4,7 @@ import com.gitlab.retropronghorn.retroslodestones.RetrosLodestones;
 import com.gitlab.retropronghorn.retroslodestones.utils.StringColorParser;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -34,11 +35,10 @@ public class NBTManager {
      * @return returns location as string
      **/
     public String getLocationStringData(ItemStack item) {
-        String locationString = item.getItemMeta()
+
+        return item.getItemMeta()
                 .getPersistentDataContainer()
                 .get((NamespacedKey) locationKeyIdentifier, PersistentDataType.STRING);
-
-        return locationString;
     }
 
     /**
@@ -48,11 +48,10 @@ public class NBTManager {
      * @return returns owner uuid string
      **/
     public String getItemOwner(ItemStack item) {
-        String locationString = item.getItemMeta()
+
+        return item.getItemMeta()
                 .getPersistentDataContainer()
                 .get((NamespacedKey) ownerKeyIdentifier, PersistentDataType.STRING);
-
-        return locationString;
     }
 
     /**
@@ -61,17 +60,20 @@ public class NBTManager {
      * @param meta           Metadata to bind
      * @param locationString Location to add to metadata
      * @param ownerUUID      Owner of the compass
+     * @param player      Owner
      **/
-    public ItemMeta setCompassMeta(ItemMeta meta, String locationString, String ownerUUID) {
+    public ItemMeta setCompassMeta(ItemMeta meta, String locationString, String ownerUUID, String player) {
         ItemMeta newMeta = meta.clone();
 
-        newMeta.setDisplayName(instance.getLanguageConfig().getString("compass-name"));
+        Component displayName = Component.text(Objects.requireNonNull(instance.getLanguageConfig().getString("compass-name")));
+        newMeta.displayName(displayName);
 
         // Set lore on item
-        List<String> lore = new ArrayList<>();
-        lore.add(instance.getLanguageConfig().getString("compass-lore"));
-        lore.add(StringColorParser.uuidToColor(ownerUUID) + instance.getLanguageConfig().getString("compass-bound") + locationString);
-        newMeta.setLore(lore);
+        List<Component> lore = new ArrayList<>();
+        lore.add(Component.text(Objects.requireNonNull(instance.getLanguageConfig().getString("compass-lore"))));
+        lore.add(Component.text(StringColorParser.uuidToColor(ownerUUID) + instance.getLanguageConfig().getString("compass-bound") + locationString));
+        lore.add(Component.text(StringColorParser.uuidToColor(ownerUUID) + instance.getLanguageConfig().getString("compass-owner") + player));
+        newMeta.lore(lore);
 
         newMeta.getPersistentDataContainer().set(
                 (NamespacedKey) locationKeyIdentifier,

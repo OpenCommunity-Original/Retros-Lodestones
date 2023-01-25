@@ -16,11 +16,6 @@ import java.util.Objects;
 
 /**
  * Represents a new compass item
- *
- * @author RetroPronghorn
- * @author https://gitlab.com/retropronghorn/retros-lodestones
- * @version 1.0-SNAPSHOT
- * @since 1.0
  */
 public class Compass {
     private final RetrosLodestones instance;
@@ -129,7 +124,7 @@ public class Compass {
     private ItemStack buildCompass(Player player, ItemStack item, Location location) {
         ItemStack boundCompass = new ItemStack(item.getType());
         String locationString = LocationUtil.toString(location);
-        ItemMeta meta = nbtManager.setCompassMeta(boundCompass.getItemMeta(), locationString, player.getUniqueId().toString());
+        ItemMeta meta = nbtManager.setCompassMeta(boundCompass.getItemMeta(), locationString, player.getUniqueId().toString(), player.getName());
         // Set Meta
         boundCompass.setItemMeta(meta);
         return boundCompass;

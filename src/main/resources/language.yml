@@ -4,6 +4,7 @@
 compass-name: "Lodestone Compass"
 compass-lore: "Use on lodestone to teleport"
 compass-bound: "Bound to "
+compass-owner: "Owner "
 pointless-teleport: "You are already at this location."
 insufficient-experience: "You need more experience to teleport."
 teleport-successful: "Teleporting to a remote location!"

@@ -8,11 +8,6 @@ import org.bukkit.plugin.Plugin;
 
 /**
  * Represents a new MessengerHandler
- *
- * @author RetroPronghorn
- * @author https://gitlab.com/retropronghorn/retros-lodestones
- * @version 1.0-SNAPSHOT
- * @since 1.0
  */
 public class MessengerHandler {
 

@@ -10,11 +10,6 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * Represents a new BlockInteractions listener
- *
- * @author RetroPronghorn
- * @author https://gitlab.com/retropronghorn/retros-lodestones
- * @version 1.0-SNAPSHOT
- * @since 1.0
  */
 public class BlockInteractions implements Listener {
     RetrosLodestones instance;

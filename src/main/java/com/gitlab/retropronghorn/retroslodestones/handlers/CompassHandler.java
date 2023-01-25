@@ -16,11 +16,6 @@ import java.util.Objects;
 
 /**
  * Represents a new CompassHandler
- *
- * @author RetroPronghorn
- * @author https://gitlab.com/retropronghorn/retros-lodestones
- * @version 1.0-SNAPSHOT
- * @since 1.0
  */
 public class CompassHandler {
     private static final FileConfiguration config = RetrosLodestones.getPlugin().getConfig();

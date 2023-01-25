@@ -5,10 +5,10 @@ plugins {
 
 group 'com.gitlab.retropronghorn'
 version '1.4'
-jar.enabled = false;
+jar.enabled = false
 
 repositories {
-    mavenLocal();
+    mavenLocal()
     mavenCentral()
     maven {
         url = "https://papermc.io/repo/repository/maven-public/"
@@ -25,10 +25,6 @@ dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT'
     implementation "net.kyori:adventure-api:4.12.0"
     implementation "net.kyori:adventure-platform-bukkit:4.2.0"
-    testImplementation 'org.hamcrest:hamcrest:2.2'
-    testImplementation(group: 'org.bukkit', name: 'craftbukkit', version: '1.18.1-R0.1-SNAPSHOT')
-    testImplementation(group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9')
-    testImplementation(group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9')
 }
 
 processResources {
@@ -36,11 +32,11 @@ processResources {
 }
 
 shadowJar {
-    archiveFileName = 'RetrosLodestones-' + project.version.toString() + '.jar';
+    archiveFileName = 'RetrosLodestones-' + project.version.toString() + '.jar'
 }
 
 artifacts {
-    shadowJar;
+    shadowJar
 }
 
-assemble.dependsOn(shadowJar);
+assemble.dependsOn(shadowJar)

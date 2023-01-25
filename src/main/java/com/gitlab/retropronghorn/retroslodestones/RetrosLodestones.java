@@ -22,11 +22,6 @@ import java.util.Objects;
 
 /**
  * Represents the RetrosLodestones plugin.
- *
- * @author RetroPronghorn
- * @author https://gitlab.com/retropronghorn/retros-lodestones
- * @version 1.0-SNAPSHOT
- * @since 1.0
  */
 public final class RetrosLodestones extends JavaPlugin {
     private static RetrosLodestones instance;

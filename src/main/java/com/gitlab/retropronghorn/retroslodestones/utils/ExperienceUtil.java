@@ -6,11 +6,6 @@ import org.bukkit.entity.Player;
 
 /**
  * Represents a new experience util
- *
- * @author RetroPronghorn
- * @author https://gitlab.com/retropronghorn/retros-lodestones
- * @version 1.0-SNAPSHOT
- * @since 1.0
  */
 public class ExperienceUtil {
     Player player;
@@ -62,7 +57,7 @@ public class ExperienceUtil {
      * @param amount Amount of experience to deduct
      **/
     public void deductExperience(Double amount) {
-        Integer reducedExp = this.getTotalExperience() - ((int) Math.round(amount));
+        int reducedExp = this.getTotalExperience() - ((int) Math.round(amount));
         this.setTotalExperience(reducedExp);
     }
 
@@ -94,8 +89,8 @@ public class ExperienceUtil {
      * @param amount amount of experience to set on the player
      **/
     private void setTotalExperience(int amount) {
-        int level = 0;
-        int xp = 0;
+        int level;
+        int xp;
         float a = 0;
         float b = 0;
         float c = -amount;

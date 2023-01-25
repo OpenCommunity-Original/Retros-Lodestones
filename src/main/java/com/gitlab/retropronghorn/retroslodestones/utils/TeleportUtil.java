@@ -6,11 +6,6 @@ import org.bukkit.entity.Player;
 
 /**
  * Represents a teleport util
- *
- * @author RetroPronghorn
- * @author https://gitlab.com/retropronghorn/retros-lodestones
- * @version 1.0-SNAPSHOT
- * @since 1.0
  */
 public class TeleportUtil {
     /**

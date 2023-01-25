@@ -11,11 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a new InfoCommand
- *
- * @author RetroPronghorn
- * @author https://gitlab.com/retropronghorn/retros-lodestones
- * @version 1.0-SNAPSHOT
- * @since 1.0
  */
 public class InfoCommand implements CommandExecutor {
     private final RetrosLodestones instance;
