@@ -1,7 +1,6 @@
 package com.gitlab.retropronghorn.retroslodestones.handlers;
 
 import com.gitlab.retropronghorn.retroslodestones.RetrosLodestones;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -20,7 +19,8 @@ public class MessengerHandler {
      * @param message Message to display on the actionbar
      **/
     public static void sendActionbarMessage(Player player, String message) {
-        BukkitAudiences.create(plugin).player(player).sendActionBar(Component.text(message));
+        player.sendActionBar(Component.text(message));
+        player.sendActionBar(Component.text(message));
     }
 
     /**
@@ -40,7 +40,7 @@ public class MessengerHandler {
      * @param title  Title to send
      */
     public static void sendTitle(Player player, String title) {
-        //BukkitAudiences.create(plugin).player(player).sendTitle(title);
+        //player.sendTitle(title);
     }
 
     /**
