@@ -13,14 +13,15 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import static org.bukkit.Bukkit.getServer;
 
 /**
- The LocaleAPI class provides a simple and efficient way to manage player
- locales and retrieve localized messages based on the player's locale.
+ * The LocaleAPI class provides a simple and efficient way to manage player
+ * locales and retrieve localized messages based on the player's locale.
  */
 public class LocaleAPI implements Listener {
     private static final Map<Player, Locale> playerLocales = new HashMap<>();
@@ -28,8 +29,31 @@ public class LocaleAPI implements Listener {
     private static final List<Locale> SUPPORTED_LOCALES = new ArrayList<>();
     private static String baseName;
 
+    /**
+     * Sets the locale for a player.
+     *
+     * @param player The player to set the locale for
+     * @param locale The locale to set
+     */
     private static void setPlayerLocale(Player player, Locale locale) {
         playerLocales.put(player, locale);
+    }
+
+    /**
+     * Loads a configuration file asynchronously.
+     *
+     * @param file The file to load
+     * @return A CompletableFuture that will complete with the loaded configuration file or null if there was an error
+     */
+    private static CompletableFuture<YamlConfiguration> loadConfigurationAsync(File file) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return YamlConfiguration.loadConfiguration(file);
+            } catch (Exception e) {
+                Bukkit.getLogger().warning("Error loading configuration file: " + e.getMessage());
+                return null;
+            }
+        });
     }
 
     /**
@@ -64,22 +88,35 @@ public class LocaleAPI implements Listener {
      * return null.
      *
      * @param player the player
-     * @param key the message key
+     * @param key    the message key
      * @return the message or null if not found
      */
     public static String getMessage(Player player, String key) {
         Locale locale = getPlayerLocale(player);
         String lang = locale.toLanguageTag();
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(baseName, lang + ".lang"));
-        String message = config.getString(key);
+        File file = new File(baseName, lang + ".lang");
+
+        CompletableFuture<YamlConfiguration> future = loadConfigurationAsync(file);
+        String message = future.thenApply(config -> config.getString(key))
+                .exceptionally(e -> {
+                    Bukkit.getLogger().warning("Error getting message: " + e.getMessage());
+                    return null;
+                })
+                .join();
 
         if (message == null) {
-            config = YamlConfiguration.loadConfiguration(new File(baseName, DEFAULT_LOCALE.toLanguageTag() + ".lang"));
-            message = config.getString(key);
+            CompletableFuture<YamlConfiguration> fallback = loadConfigurationAsync(new File(baseName, DEFAULT_LOCALE.toLanguageTag() + ".lang"));
+            message = fallback.thenApply(config -> config.getString(key))
+                    .exceptionally(e -> {
+                        Bukkit.getLogger().warning("Error getting message: " + e.getMessage());
+                        return null;
+                    })
+                    .join();
         }
 
         return message;
     }
+
 
     /**
      * Checks if the locale is supported.
@@ -130,6 +167,7 @@ public class LocaleAPI implements Listener {
             Bukkit.getLogger().warning("Error copying Messages folder from plugin resources: " + e.getMessage());
         }
     }
+
 
     /**
      * Loads the supported locales from the plugin's messages folder.
