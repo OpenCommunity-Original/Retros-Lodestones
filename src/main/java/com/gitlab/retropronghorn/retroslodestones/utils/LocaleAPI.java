@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -28,6 +29,7 @@ public class LocaleAPI implements Listener {
     private static final Locale DEFAULT_LOCALE = Locale.US;
     private static final List<Locale> SUPPORTED_LOCALES = new ArrayList<>();
     private static String baseName;
+    private static final Map<String, YamlConfiguration> configurationCache = new ConcurrentHashMap<>();
 
     /**
      * Sets the locale for a player.
@@ -44,11 +46,19 @@ public class LocaleAPI implements Listener {
      *
      * @param file The file to load
      * @return A CompletableFuture that will complete with the loaded configuration file or null if there was an error
+     * @implNote The loaded configuration file is stored in cache for future use.
      */
     private static CompletableFuture<YamlConfiguration> loadConfigurationAsync(File file) {
+        String key = file.getAbsolutePath();
+        YamlConfiguration cachedConfig = configurationCache.get(key);
+        if (cachedConfig != null) {
+            return CompletableFuture.completedFuture(cachedConfig);
+        }
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return YamlConfiguration.loadConfiguration(file);
+                YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+                configurationCache.put(key, config);
+                return config;
             } catch (Exception e) {
                 Bukkit.getLogger().warning("Error loading configuration file: " + e.getMessage());
                 return null;
