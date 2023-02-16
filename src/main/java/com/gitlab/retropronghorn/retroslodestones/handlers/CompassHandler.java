@@ -2,11 +2,16 @@ package com.gitlab.retropronghorn.retroslodestones.handlers;
 
 import com.gitlab.retropronghorn.retroslodestones.RetrosLodestones;
 import com.gitlab.retropronghorn.retroslodestones.items.Compass;
+import com.gitlab.retropronghorn.retroslodestones.utils.LocaleAPI;
 import com.gitlab.retropronghorn.retroslodestones.utils.LocationUtil;
 import com.gitlab.retropronghorn.retroslodestones.utils.LoggingUtil;
 import com.gitlab.retropronghorn.retroslodestones.utils.TeleportUtil;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -46,9 +51,10 @@ public class CompassHandler {
      * @param event Event to handle
      **/
     public void handlePlayerInteraction(PlayerInteractEvent event) {
-        if (event.getAction().name().equals("RIGHT_CLICK_BLOCK"))
+        String action = event.getAction().name();
+        if (action.equals("RIGHT_CLICK_BLOCK"))
             handleRightClickEvent(event);
-        if (event.getAction().name().equals("LEFT_CLICK_BLOCK"))
+        if (action.equals("LEFT_CLICK_BLOCK"))
             handleLeftClickEvent(event);
     }
 
@@ -58,42 +64,46 @@ public class CompassHandler {
      * @param event Event to handle
      **/
     private void handleRightClickEvent(PlayerInteractEvent event) {
-        if (Objects.requireNonNull(event.getClickedBlock())
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+        Location location = block.getLocation();
+        World world = block.getWorld();
+        ItemStack item = event.getItem();
+        if (Objects.requireNonNull(block)
                 .getType()
                 .toString()
                 .equals(config.getString("lodestone-item"))) {
             // Cancel potential events on custom lodestones
-            if (!event.getClickedBlock()
+            if (!block
                     .getType()
                     .toString()
                     .equals(config.getString("lodestone-default"))) {
                 event.setCancelled(true);
-                LoggingUtil.warning(event.getPlayer().displayName() + " caught custom lodestone block clicked. Cancelling events.");
+                LoggingUtil.warning(player.displayName() + " caught custom lodestone block clicked. Cancelling events.");
             }
-            Location location = event.getClickedBlock().getLocation();
-            if (compass.isBound(event.getItem())) { // Compass is already bound
-                MessengerHandler.sendActionbarMessage(event.getPlayer(),
-                        instance.getLanguageConfig().getString("already-bound"));
+            if (compass.isBound(item)) { // Compass is already bound
+                MessengerHandler.sendActionbarMessage(player,
+                        LocaleAPI.getMessage(player,"already-bound"));
                 SoundHandler
                         .playSound(
                                 instance.getSoundsConfig().getString("already-bound"),
-                                event.getClickedBlock().getWorld(),
-                                event.getClickedBlock().getLocation());
-                LoggingUtil.info(event.getPlayer().displayName() + " failed to bind a compass (already-bound)");
+                                world,
+                                location);
+                LoggingUtil.info(player.displayName() + " failed to bind a compass (already-bound)");
             } else { // Bind Compass
                 SoundHandler
                         .playSound(
                                 instance.getSoundsConfig().getString("bind-successful"),
-                                event.getClickedBlock().getWorld(),
-                                event.getClickedBlock().getLocation());
+                                world,
+                                location);
                 ParticleHandler
                         .spawnParticle(
                                 instance.getParticlesConfig().getString("bind-successful"),
-                                event.getClickedBlock().getWorld(),
-                                event.getClickedBlock().getLocation(),
+                                world,
+                                block.getLocation(),
                                 15);
-                compass.bindCompass(event.getPlayer(), event.getItem(), location);
-                LoggingUtil.info(event.getPlayer().displayName() + " bound a compass at " + location);
+                compass.bindCompass(player, item, location);
+                LoggingUtil.info(player.displayName() + " bound a compass at " + location);
             }
         }
     }
@@ -104,145 +114,140 @@ public class CompassHandler {
      * @param event Event to handle
      **/
     private void handleLeftClickEvent(PlayerInteractEvent event) {
-        if (Objects.requireNonNull(event.getClickedBlock())
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+        Location location = block.getLocation();
+        World world = block.getWorld();
+        ItemStack item = event.getItem();
+        if (Objects.requireNonNull(block)
                 .getType()
                 .toString()
                 .equals(config.getString("respawn-anchor-item"))) {
-            if (compass.isBound(event.getItem())) { // Handle Teleport
+            if (compass.isBound(item)) { // Handle Teleport
                 if ((instance.getConfig().getBoolean("owner-only-teleport") &&
-                        compass.isOwner(event.getPlayer())) || !instance.getConfig().getBoolean("owner-only-teleport")) {
+                        compass.isOwner(player)) || !instance.getConfig().getBoolean("owner-only-teleport")) {
                     // Make sure we're not teleporting from the bound lodestone to the bound lodestone
-                    if (compass.isTeleportingPointless(event.getClickedBlock().getLocation(), event.getPlayer())) {
-                        sendMessageSoundParticle(event, "pointless-teleport", "teleport-failed", "pointless-teleport");
-                        LoggingUtil.info(event.getPlayer().displayName() + " attempted a pointless teleport (pointless-teleport)");
+                    if (compass.isTeleportingPointless(location, player)) {
+                        sendMessageSoundParticle(player, location, world, "pointless-teleport", "teleport-failed", "pointless-teleport");
+                        LoggingUtil.info(player.displayName() + " attempted a pointless teleport (pointless-teleport)");
                     } else {
-                        Boolean missingLodestone = compass.lodestoneMissing(event.getPlayer());
+                        Boolean missingLodestone = compass.lodestoneMissing(player);
                         if (missingLodestone) {
                             SoundHandler.playSound(
                                     instance.getSoundsConfig().getString("obstructed-lodestone"),
-                                    event.getClickedBlock().getLocation().getWorld(),
-                                    event.getClickedBlock().getLocation());
+                                    world,
+                                    location);
                             ParticleHandler.spawnParticle(
                                     instance.getParticlesConfig().getString("teleport-failed"),
-                                    event.getClickedBlock().getLocation().getWorld(),
-                                    event.getClickedBlock().getLocation());
-                            MessengerHandler.sendActionbarMessage(event.getPlayer(), instance.getLanguageConfig().getString("obstructed-lodestone"));
+                                    world,
+                                    location);
+                            MessengerHandler.sendActionbarMessage(player, LocaleAPI.getMessage(player,"obstructed-lodestone"));
                             return;
                         }
 
-                        ItemStack compassItem = event.getPlayer().getInventory().getItemInMainHand();
+                        ItemStack compassItem = player.getInventory().getItemInMainHand();
                         String locationString = nbtManager.getLocationStringData(compassItem);
                         Boolean freeSpace = TeleportUtil.freeSpaceAbove(Objects.requireNonNull(LocationUtil.fromString(locationString)));
                         if (!freeSpace) {
                             SoundHandler.playSound(
                                     instance.getSoundsConfig().getString("obstructed-lodestone"),
-                                    event.getClickedBlock().getLocation().getWorld(),
-                                    event.getClickedBlock().getLocation());
+                                    world,
+                                    location);
                             ParticleHandler.spawnParticle(
                                     instance.getParticlesConfig().getString("teleport-failed"),
-                                    event.getClickedBlock().getLocation().getWorld(),
-                                    event.getClickedBlock().getLocation());
-                            MessengerHandler.sendActionbarMessage(event.getPlayer(), instance.getLanguageConfig().getString("obstructed-lodestone"));
+                                    world,
+                                    location);
+                            MessengerHandler.sendActionbarMessage(player, LocaleAPI.getMessage(player,"obstructed-lodestone"));
                             return;
                         }
 
-                        Boolean teleport = compass.doTeleport(event.getPlayer());
+                        Boolean teleport = compass.doTeleport(player);
                         if (!teleport) {
-                            sendMessageSoundParticle(event, "insufficient-experience", "teleport-failed", "insufficient-experience");
-                            LoggingUtil.info(event.getPlayer().displayName() + " failed to teleport (insufficient-experience)");
+                            sendMessageSoundParticle(player, location, world, "insufficient-experience", "teleport-failed", "insufficient-experience");
+                            LoggingUtil.info(player.displayName() + " failed to teleport (insufficient-experience)");
                             return;
                         }
 
                         if (instance.getConfig().getBoolean("teleportation-sickness"))
-                            applyTeleportSickness(instance, event);
+                            applyTeleportSickness(instance, player);
 
-                        sendMessageSoundParticle(event, "teleport-successful", "teleport-success", "teleport-successful");
+                        sendMessageSoundParticle(player, location, world, "teleport-successful", "teleport-success", "teleport-successful");
                         ParticleHandler.spawnParticle(
                                 instance.getParticlesConfig().getString("teleport-success-player"),
-                                event.getPlayer().getWorld(),
-                                event.getPlayer().getLocation(),
+                                player.getWorld(),
+                                player.getLocation(),
                                 instance.getParticlesConfig().getInt("teleport-succcess-player-count"));
 
-                        LoggingUtil.info(event.getPlayer().displayName() + " teleported successfully " + event.getPlayer().getLocation());
+                        LoggingUtil.info(player.displayName() + " teleported successfully " + player.getLocation());
 
                     }
                 } else {
-                    sendMessageSoundParticle(event, "not-owner", "teleport-failed", "not-owner");
-                    LoggingUtil.info(event.getPlayer().displayName() + " attempted to teleport using un-owned compass");
+                    sendMessageSoundParticle(player, location, world, "not-owner", "teleport-failed", "not-owner");
+                    LoggingUtil.info(player.displayName() + " attempted to teleport using un-owned compass");
                 }
             } else { // Compass is not bound
-                sendMessageSoundParticle(event, "not-bound", "teleport-failed", "not-bound");
-                LoggingUtil.info(event.getPlayer().displayName() + " attempted to teleport using unbound compass");
+                sendMessageSoundParticle(player, location, world, "not-bound", "teleport-failed", "not-bound");
+                LoggingUtil.info(player.displayName() + " attempted to teleport using unbound compass");
             }
         }
     }
 
     /**
      * Handles playing sounds, sending messages and spawning particles.
-     *
-     * @param event   Event to handle
-     * @param message Message to send
-     * @param sound   Sound to play
      **/
-    private void sendMessageSoundParticle(PlayerInteractEvent event, String message, String particle, String sound) {
+    private void sendMessageSoundParticle(Player player, Location location, World world, String message, String particle, String sound) {
         MessengerHandler.sendActionbarMessage(
-                event.getPlayer(),
-                instance.getLanguageConfig().getString(message));
+                player,
+                LocaleAPI.getMessage(player, message));
         ParticleHandler.spawnParticle(
                 instance.getParticlesConfig().getString(particle),
-                Objects.requireNonNull(event.getClickedBlock()).getWorld(),
-                event.getClickedBlock().getLocation(),
-                5);
+                Objects.requireNonNull(world
+                ), location, 5);
         SoundHandler.playSound(
                 instance.getSoundsConfig().getString(sound),
-                event.getClickedBlock().getWorld(),
-                event.getClickedBlock().getLocation());
+                world,
+                location);
     }
 
     /**
      * Applies teleport sickness to a player
-     *
-     * @param instance RetrosLodestone plugin instance
-     * @param event    Event to act on
      **/
-    private void applyTeleportSickness(RetrosLodestones instance, PlayerInteractEvent event) {
-        event.getPlayer().addPotionEffect(
+    private void applyTeleportSickness(RetrosLodestones instance, Player player) {
+        player.addPotionEffect(
                 new PotionEffect(
                         PotionEffectType.WEAKNESS,
                         instance.getConfig().getInt("teleportation-sickness-duration"),
                         1));
-        event.getPlayer().addPotionEffect(
+        player.addPotionEffect(
                 new PotionEffect(
                         PotionEffectType.CONFUSION,
                         instance.getConfig().getInt("teleportation-sickness-duration"),
                         4));
-        event.getPlayer().addPotionEffect(
+        player.addPotionEffect(
                 new PotionEffect(
                         PotionEffectType.LEVITATION,
                         instance.getConfig().getInt("teleport-delay"),
                         1));
-        /*event.getPlayer().addPotionEffect(
+        player.addPotionEffect(
                 new PotionEffect(
                         PotionEffectType.BLINDNESS,
                         instance.getConfig().getInt("teleportation-sickness-duration"),
-                        2));*/
+                        1));
     }
 
     /**
      * Handle compass functionality when sneak clickcing
-     *
-     * @param event Event to act on
      **/
-    public void handleTrack(PlayerInteractEvent event) {
-        ItemStack compassItem = event.getPlayer().getInventory().getItemInMainHand();
+    public void handleTrack(Player player) {
+        ItemStack compassItem = player.getInventory().getItemInMainHand();
         Location boundLocation = compass.getBoundLocation(compassItem);
-        event.getPlayer().setCompassTarget(boundLocation);
+        player.setCompassTarget(boundLocation);
         MessengerHandler
                 .sendActionbarMessage(
-                        event.getPlayer(),
-                        instance.getLanguageConfig().getString("locked-on") +
+                        player,
+                        LocaleAPI.getMessage(player,"locked-on") +
                                 " " +
-                                Math.floor(event.getPlayer().getLocation().distance(boundLocation)) +
+                                Math.floor(player.getLocation().distance(boundLocation)) +
                                 " blocks away.");
     }
 }

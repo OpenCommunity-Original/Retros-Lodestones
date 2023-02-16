@@ -4,6 +4,9 @@ import com.gitlab.retropronghorn.retroslodestones.RetrosLodestones;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN;
+
+
 /**
  * Represents a teleport util
  */
@@ -21,7 +24,7 @@ public class TeleportUtil {
                 location.getY() + 1,
                 location.getZ() + 0.5);
 
-        instance.getServer().getScheduler().scheduleSyncDelayedTask(instance, () -> player.teleport(offsetLocation), instance.getConfig().getInt("teleport-delay"));
+        instance.getServer().getScheduler().scheduleSyncDelayedTask(instance, () -> player.teleportAsync(offsetLocation, PLUGIN), instance.getConfig().getInt("teleport-delay"));
         return true;
     }
 

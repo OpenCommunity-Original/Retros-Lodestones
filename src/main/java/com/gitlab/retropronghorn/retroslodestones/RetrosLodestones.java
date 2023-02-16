@@ -10,6 +10,8 @@ package com.gitlab.retropronghorn.retroslodestones;
 
 import com.gitlab.retropronghorn.retroslodestones.commands.InfoCommand;
 import com.gitlab.retropronghorn.retroslodestones.listeners.BlockInteractions;
+import com.gitlab.retropronghorn.retroslodestones.utils.LocaleAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -50,6 +52,9 @@ public final class RetrosLodestones extends JavaPlugin {
 
         // Register events
         this.getServer().getPluginManager().registerEvents(new BlockInteractions(this), this);
+        LocaleAPI localeAPI = new LocaleAPI();
+        Bukkit.getPluginManager().registerEvents(localeAPI, this);
+        localeAPI.loadSupportedLocales(this);
 
         // Register Commands
         Objects.requireNonNull(this.getCommand("retroslodestones")).setExecutor(new InfoCommand(this));

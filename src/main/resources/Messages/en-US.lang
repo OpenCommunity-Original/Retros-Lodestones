@@ -1,0 +1,14 @@
+# EN
+
+pointless-teleport: "You are already at this location"
+insufficient-experience: "You need more experience to teleport"
+teleport-successful: "Teleporting to a remote location"
+obstructed-lodestone: "The lodestone is missing or obstructed"
+not-owner: "Only the owner can teleport using this compass"
+wrong-dimension: "The lodestone is in a different dimension"
+not-bound: "This compass is not bound to a lodestone"
+already-bound: "This compass is already bound"
+locked-on: "Targeted lodestone"
+title:
+  title: "Teleporting..."
+  substitle: "to {location} for {experience_cost} exp"

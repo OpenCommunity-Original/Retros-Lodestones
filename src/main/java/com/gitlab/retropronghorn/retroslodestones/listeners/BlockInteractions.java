@@ -33,7 +33,7 @@ public class BlockInteractions implements Listener {
         if (player.hasPermission("retroslodestones.use")) {
             if (heldItem.getType().toString().equals(instance.getConfig().getString("compass-item"))) {
                 if (event.getAction().name().equals("RIGHT_CLICK_AIR")) {
-                    compassHandler.handleTrack(event);
+                    compassHandler.handleTrack(player);
                 } else {
                     compassHandler.handlePlayerInteraction(event);
                 }
