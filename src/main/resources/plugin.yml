@@ -1,9 +1,9 @@
 name: RetrosLodestones
 version: ${version}
 main: com.gitlab.retropronghorn.retroslodestones.RetrosLodestones
-api-version: 1.19
+api-version: 1.20
 authors: [RetroPronghorn, Envel]
-description: Retro's Lodestones adds teleport functionality to lodestones in Minecraft 1.16+ Players can bind a compass to a lodestone then right click the compass on a respawn anchor, consuming a single glowstone charge, to teleport to the bound lodestone.
+description: Retro's Lodestones adds teleport functionality to lodestones in Minecraft. Players can bind a compass to a lodestone then right click the compass on a respawn anchor, to teleport to the bound lodestone.
 commands:
   retroslodestones:
     description: Plugin info
